@@ -44,6 +44,21 @@ Results:
 
 Data preview:
 
-[CSV Data](/sentiment_analysis_results.csv)
+[CSV Data](sentiment_analysis_results.csv)
 
 ![Data preview](doc/img/image5.png)
+
+## USING A TWEETCLAW EXPORT
+
+You can also analyze tweets or replies exported from
+[TweetClaw](https://github.com/Xquik-dev/tweetclaw) without collecting a new
+Tweet ID:
+
+```
+$ python3 main.py --tweetclaw-export exports/tweetclaw.csv
+```
+
+The import path accepts TweetClaw CSV, JSON, JSONL, or NDJSON files and reads
+common text fields such as `text`, `tweet_text`, `full_text`, and `content`.
+The existing VADER labeling, TF-IDF vectorization, Logistic Regression training,
+and `sentiment_analysis_results.csv` output stay unchanged.
