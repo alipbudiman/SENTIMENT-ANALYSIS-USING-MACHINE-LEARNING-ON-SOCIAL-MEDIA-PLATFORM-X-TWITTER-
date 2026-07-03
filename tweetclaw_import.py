@@ -4,8 +4,27 @@ from pathlib import Path
 from typing import Any
 
 
-TEXT_COLUMNS = ("text", "tweet_text", "full_text", "content", "comment")
-USERNAME_COLUMNS = ("username", "user.username", "author.username", "screen_name", "user")
+TEXT_COLUMNS = (
+    "text",
+    "tweet_text",
+    "tweetText",
+    "reply_text",
+    "replyText",
+    "full_text",
+    "content",
+    "comment",
+)
+USERNAME_COLUMNS = (
+    "username",
+    "user.username",
+    "author.username",
+    "screen_name",
+    "author_username",
+    "authorUsername",
+    "x_username",
+    "xUsername",
+    "user",
+)
 
 
 def read_export_rows(input_path: Path) -> list[dict[str, Any]]:
