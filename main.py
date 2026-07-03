@@ -1,3 +1,4 @@
+import argparse
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -7,13 +8,14 @@ import nltk
 from nltk.corpus import stopwords
 import re
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from tweetapi import TweetApi
-
-# Inisialisasi TweetApi untuk mengambil data komentar dari tweet tertentu
-tw = TweetApi()
+from tweetclaw_import import load_tweetclaw_export
 
 # Fungsi untuk mengumpulkan data komentar dari tweet dengan ID tertentu
 def TweetCollection(tweet_id, scarp_continue=5):
+    from tweetapi import TweetApi
+
+    # Inisialisasi TweetApi untuk mengambil data komentar dari tweet tertentu
+    tw = TweetApi()
     data_collection = []  # List untuk menyimpan data komentar
     try:
         data, status = tw.TweetAPIReplies(tweet_id)  # Ambil balasan tweet pertama
@@ -45,11 +47,22 @@ def TweetCollection(tweet_id, scarp_continue=5):
         print(f"An error occurred: {e}")
         return []
 
-# Meminta pengguna untuk memasukkan Tweet ID
-tweet_id = input("Masukkan Tweet ID: ")
+parser = argparse.ArgumentParser(description="Run sentiment analysis on X/Twitter comments.")
+parser.add_argument(
+    "--tweetclaw-export",
+    default=None,
+    help="Optional TweetClaw CSV, JSON, JSONL, or NDJSON export to analyze instead of collecting replies.",
+)
+args = parser.parse_args()
 
-# Kumpulkan data komentar dari tweet dengan ID yang diberikan
-database_collections = TweetCollection(tweet_id, scarp_continue=5)
+if args.tweetclaw_export:
+    database_collections = load_tweetclaw_export(args.tweetclaw_export)
+else:
+    # Meminta pengguna untuk memasukkan Tweet ID
+    tweet_id = input("Masukkan Tweet ID: ")
+
+    # Kumpulkan data komentar dari tweet dengan ID yang diberikan
+    database_collections = TweetCollection(tweet_id, scarp_continue=5)
 
 # Pastikan untuk mengunduh stopwords jika belum
 nltk.download('stopwords')
